@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Virgínia</title>
+    <style>
+        /* Estilos globais */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: #fff;
+            height: 100vh; /* Ajustando altura para centralizar o conteúdo */
+            position: relative; /* Para o posicionamento do botão e do bot */
+        }
+
+        /* Botão */
+        .help-button {
+            display: inline-block;
+            font-size: 16px;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .help-button:hover {
+            background-color: #357abd;
+            transform: scale(1.05);
+        }
+
+        /* Pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 18px;
+            color: #555;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-popup:hover {
+            color: #e74c3c;
+        }
+
+        /* Ícone do bot */
+        .bot-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 50%; /* Posicionando o botão no centro vertical */
+            left: 50%; /* Posicionando o botão no centro horizontal */
+            transform: translate(-50%, -50%); /* Centralizando com base nas 50% */
+            z-index: 1000;
+        }
+
+        .bot-icon svg {
+            fill: #fff;
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Container do bot */
+        .container {
+            position: fixed;
+            margin: 600px 0px 0px 400px;
+            transform: translate(-50%, -50%); /* Ajustando a posição para o centro exato */
+            background: #fff;
+            color: #333;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            z-index: 999;
+            display: none; /* Inicialmente oculto */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            border: none;
+            background: none;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            color: #e74c3c;
+        }
+
+        /* Ajustando a posição do texto dentro do container */
+        .container h1, .container p {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<section class="bot"></section>
+    <!-- Ícone do bot -->
+    <div class="bot-icon" onclick="showBot()">
+        <!-- Ícone SVG (simbolizando um bot) -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2a3 3 0 013 3v1h4a1 1 0 011 1v3a1 1 0 01-1 1v6a5 5 0 01-5 5H8a5 5 0 01-5-5v-6a1 1 0 01-1-1V7a1 1 0 011-1h4V5a3 3 0 013-3zm-3 9a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2zm-6.5 4h5a.5.5 0 01.09.992L13.5 16h-5a.5.5 0 01-.09-.992L8.5 15h5-5z"/>
+        </svg>
+    </div>
+   
+    <div class="container" id="botContainer">
+        <!-- Botão de fechar -->
+        <button class="close-button" onclick="hideBot()" aria-label="Fechar bot">&times;</button>
+        
+      
+        
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+        <df-messenger
+          intent="WELCOME"
+          chat-title="Virgínia"
+          agent-id="65f604c9-4877-42b8-acd3-0f0fae091296"
+          language-code="pt-br"
+        ></df-messenger>
+        
+        <!-- Botão de ajuda -->
+        <button class="help-button" onclick="openPopup()" aria-label="Abrir ajuda">Precisa de ajuda?</button>
+    </div>
+
+    <!-- Pop-up de ajuda -->
+    <div class="popup" id="helpPopup" role="dialog" aria-labelledby="helpTitle" aria-hidden="true">
+        <div class="popup-content">
+            <span class="close-popup" onclick="closePopup()" aria-label="Fechar ajuda">&times;</span>
+            <h3 id="helpTitle">Como usar?</h3>
+            <p>Use o iframe para conversas ou envie perguntas diretamente no campo acima.</p>
+        </div>
+    </div>
+
+    <script>
+        // Funções do pop-up
+        function openPopup() {
+            const popup = document.getElementById('helpPopup');
+            popup.style.display = 'block';
+            popup.setAttribute('aria-hidden', 'false');
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('helpPopup');
+            popup.style.display = 'none';
+            popup.setAttribute('aria-hidden', 'true');
+        }
+
+        // Função para mostrar o bot e ocultar o ícone
+        function showBot() {
+            const botContainer = document.getElementById('botContainer');
+            const botIcon = document.querySelector('.bot-icon');
+            botIcon.style.display = 'none'; // Esconde o ícone do bot
+            botContainer.style.display = 'block'; // Exibe a caixa do bot
+        }
+
+        // Função para ocultar o bot
+        function hideBot() {
+            const botContainer = document.getElementById('botContainer');
+            botContainer.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
